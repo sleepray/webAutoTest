@@ -8,8 +8,6 @@ __author__ = '1084502012@qq.com'
 import pytest
 from py._xmlgen import html
 from selenium import webdriver
-from common.inspect import inspect_element
-from common.send_mail import send_report
 
 driver = None
 
@@ -18,14 +16,12 @@ driver = None
 def drivers(request):
     global driver
     if driver is None:
-        inspect_element()
         driver = webdriver.Chrome()
         driver.maximize_window()
 
     def fn():
         print("当全部用例执行完之后：quit driver！")
         driver.quit()
-        send_report()
 
     request.addfinalizer(fn)
     return driver

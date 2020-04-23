@@ -10,6 +10,7 @@ import pytest
 import conf
 from PageObject.searchpage import SearchPage
 from common.log import log
+from common.readconfig import ini
 
 
 class TestSearch:
@@ -17,7 +18,7 @@ class TestSearch:
     def open_baidu(self, drivers):
         """打开百度"""
         search = SearchPage(drivers)
-        search.get_url(conf.HOST)
+        search.get_url(ini.url)
 
     def test_001(self, drivers):
         """搜索"""

@@ -27,6 +27,8 @@ def inspect_element():
                         assert '//' in value, '【%s】路径中【%s]元素xpath类型与值不配' % (i, k)
                     if pattern == 'css':
                         assert '//' not in value, '【%s】路径中【%s]元素css类型与值不配' % (i, k)
+                    if pattern in ('id', 'name', 'class'):
+                        assert value, '【%s】路径中【%s]元素类型与值不匹配' % (i, k)
     end_time = time.time()
     print("校验元素done！用时%.3f秒！" % (end_time - start_time))
 

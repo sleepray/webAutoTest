@@ -32,4 +32,4 @@ class Element:
 
 if __name__ == '__main__':
     search = Element('search')
-    print(search['搜索框1'])
+    print(search['搜索框'])
