@@ -7,8 +7,8 @@ __author__ = '1084502012@qq.com'
 
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
-from common.times import sleep
-from common.log import log
+from tools.times import sleep
+from tools.log import log
 import conf
 
 """

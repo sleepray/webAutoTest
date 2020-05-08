@@ -6,7 +6,7 @@ sys.path.append('.')
 __author__ = '1084502012@qq.com'
 
 import pytest
-from common.send_mail import send_report
+from tools.send_mail import send_report
 from common.inspect import inspect_element
 
 if __name__ == "__main__":

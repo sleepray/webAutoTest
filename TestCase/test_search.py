@@ -8,9 +8,9 @@ __author__ = '1084502012@qq.com'
 import re
 import pytest
 import conf
-from PageObject.searchpage import SearchPage
-from common.log import log
+from tools.log import log
 from common.readconfig import ini
+from PageObject.searchpage import SearchPage
 
 
 class TestSearch:

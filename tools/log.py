@@ -8,7 +8,7 @@ __author__ = '1084502012@qq.com'
 import os
 import logging
 import conf
-from common.times import datetime_strftime
+from tools.times import datetime_strftime
 
 
 class Log:
