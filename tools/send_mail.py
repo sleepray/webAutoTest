@@ -6,22 +6,22 @@ sys.path.append('.')
 __author__ = '1084502012@qq.com'
 
 import zmail
-import conf
+from config.conf import REPORT_PATH, EMAIL_INFO, ADDRESSEE
 
 
 def send_report():
     """发送报告"""
-    with open(conf.REPORT_PATH) as f:
+    with open(REPORT_PATH) as f:
         content_html = f.read()
     try:
         mail = {
             'from': '1084502012@qq.com',
             'subject': '最新的测试报告邮件',
             'content_html': content_html,
-            'attachments': [conf.REPORT_PATH, ]
+            'attachments': [REPORT_PATH, ]
         }
-        server = zmail.server(*conf.EMAIL_INFO.values())
-        server.send_mail(conf.ADDRESSEE, mail)
+        server = zmail.server(*EMAIL_INFO.values())
+        server.send_mail(ADDRESSEE, mail)
     except Exception as e:
         print("Error: 无法发送邮件，{}！", format(e))
     else:

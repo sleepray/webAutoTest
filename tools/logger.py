@@ -7,7 +7,7 @@ __author__ = '1084502012@qq.com'
 
 import os
 import logging
-import conf
+from config.conf import LOG_PATH
 from tools.times import datetime_strftime
 
 
@@ -39,7 +39,7 @@ class Log:
 
     @property
     def log_path(self):
-        return os.path.join(conf.LOG_PATH, '{}.log'.format(datetime_strftime()))
+        return os.path.join(LOG_PATH, '{}.log'.format(datetime_strftime()))
 
     @property
     def fmt(self):

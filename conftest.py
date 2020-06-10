@@ -20,7 +20,6 @@ def drivers(request):
         driver.maximize_window()
 
     def fn():
-        print("当全部用例执行完之后：quit driver！")
         driver.quit()
 
     request.addfinalizer(fn)
@@ -70,7 +69,7 @@ def pytest_html_results_table_row(report, cells):
 def pytest_html_results_table_html(report, data):
     if report.passed:
         del data[:]
-        data.append(html.div('未捕获日志输出.', class_='empty log'))
+        data.append(html.div('通过的用例未捕获日志输出.', class_='empty log'))
 
 
 def _capture_screenshot():

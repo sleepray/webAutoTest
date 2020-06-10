@@ -5,11 +5,12 @@ import sys
 sys.path.append('.')
 __author__ = '1084502012@qq.com'
 
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from config.conf import LOCATE_MODE
 from tools.times import sleep
-from tools.log import log
-import conf
+from tools.logger import log
 
 """
 selenium基类
@@ -23,7 +24,7 @@ class WebPage(object):
     def __init__(self, driver):
         # self.driver = webdriver.Chrome()
         self.driver = driver
-        self.timeout = 10
+        self.timeout = 20
         self.wait = WebDriverWait(self.driver, self.timeout)
 
     def get_url(self, url):
@@ -41,59 +42,48 @@ class WebPage(object):
     def element_locator(func, locator):
         """元素定位器"""
         name, value = locator
-        return func(conf.LOCATE_MODE[name], value)
+        return func(LOCATE_MODE[name], value)
 
-    def findelement(self, locator):
+    def find_element(self, locator):
         """寻找单个元素"""
-        return WebPage.element_locator(lambda *args: self.wait.until(lambda x: x.find_element(*args)), locator)
+        return WebPage.element_locator(lambda *args: self.wait.until(
+            EC.presence_of_element_located(args)), locator)
 
-    def findelements(self, locator):
+    def find_elements(self, locator):
         """查找多个相同的元素"""
-        return WebPage.element_locator(lambda *args: self.wait.until(lambda x: x.find_elements(*args)), locator)
+        return WebPage.element_locator(lambda *args: self.wait.until(
+            EC.presence_of_all_elements_located(args)), locator)
 
-    def isElementNum(self, locator):  # 获取相同元素的个数
+    def elements_num(self, locator):
         """获取相同元素的个数"""
-        number = len(self.findelements(locator))
+        number = len(self.find_elements(locator))
         log.info("相同元素：{}".format((locator, number)))
         return number
-
-    def is_clear(self, locator):
-        """清空输入框"""
-        self.findelement(locator).clear()
-        self.driver.implicitly_wait(0.5)
-        log.info("清空输入框！")
 
     def input_text(self, locator, txt):
         """输入(输入前先清空)"""
         sleep(0.5)
-        self.is_clear(locator)
-        self.findelement(locator).send_keys(txt)
+        ele = self.find_element(locator)
+        ele.clear()
+        ele.send_keys(txt)
         log.info("输入文本：{}".format(txt))
 
     def is_click(self, locator):
         """点击"""
-        self.findelement(locator).click()
+        self.find_element(locator).click()
         sleep()
         log.info("点击元素：{}".format(locator))
 
-    def isElementText(self, locator):
+    def element_text(self, locator):
         """获取当前的text"""
-        __text = self.findelement(locator).text
-        log.info("获取文本：{}".format(__text))
-        return __text
+        _text = self.find_element(locator).text
+        log.info("获取文本：{}".format(_text))
+        return _text
 
     @property
-    def getSource(self):
+    def get_source(self):
         """获取页面源代码"""
         return self.driver.page_source
-
-    def shot_file(self, path):
-        """文件截图"""
-        return self.driver.save_screenshot(path)
-
-    def close(self):
-        """关闭当前标签"""
-        self.driver.close()
 
     def refresh(self):
         """刷新页面F5"""

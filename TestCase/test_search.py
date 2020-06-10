@@ -7,10 +7,9 @@ __author__ = '1084502012@qq.com'
 
 import re
 import pytest
-import conf
-from tools.log import log
+from tools.logger import log
 from common.readconfig import ini
-from PageObject.searchpage import SearchPage
+from page_object.searchpage import SearchPage
 
 
 class TestSearch:
@@ -25,7 +24,7 @@ class TestSearch:
         search = SearchPage(drivers)
         search.input_search("selenium")
         search.click_search()
-        result = re.search(r'selenium', search.getSource)
+        result = re.search(r'selenium', search.get_source)
         log.info(result)
         assert result
 
@@ -38,4 +37,4 @@ class TestSearch:
 
 
 if __name__ == '__main__':
-    pytest.main(['test_search.py'])
+    pytest.main(['TestCase/test_search.py'])

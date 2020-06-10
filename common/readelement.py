@@ -7,7 +7,7 @@ __author__ = '1084502012@qq.com'
 
 import os
 import yaml
-import conf
+from config.conf import ELEMENT_PATH
 
 
 class Element:
@@ -15,7 +15,7 @@ class Element:
 
     def __init__(self, name):
         self.file_name = '%s.yaml' % name
-        self.element_path = os.path.join(conf.ELEMENT_PATH, self.file_name)
+        self.element_path = os.path.join(ELEMENT_PATH, self.file_name)
         if not os.path.exists(self.element_path):
             raise FileNotFoundError("%s 文件不存在！" % self.element_path)
         with open(self.element_path, encoding='utf-8') as f:
