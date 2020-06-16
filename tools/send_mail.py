@@ -11,7 +11,7 @@ from config.conf import REPORT_PATH, EMAIL_INFO, ADDRESSEE
 
 def send_report():
     """发送报告"""
-    with open(REPORT_PATH) as f:
+    with open(REPORT_PATH, encoding='utf-8') as f:
         content_html = f.read()
     try:
         mail = {
