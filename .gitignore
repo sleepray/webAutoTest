@@ -60,3 +60,6 @@ target/
 # picture
 *.png
 *.json
+.idea/
+allure-report/
+report/allure/

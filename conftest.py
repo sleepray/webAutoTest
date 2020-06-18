@@ -5,10 +5,15 @@ import sys
 sys.path.append('.')
 __author__ = '1084502012@qq.com'
 
+import os
+import base64
 import pytest
+import allure
 from py._xmlgen import html
 from selenium import webdriver
-
+from config.conf import SCREENSHOT_DIR
+from tools.times import datetime_strftime
+from common.inspect import inspect_element
 driver = None
 
 
@@ -18,6 +23,7 @@ def drivers(request):
     if driver is None:
         driver = webdriver.Chrome()
         driver.maximize_window()
+    inspect_element()
 
     def fn():
         driver.quit()
@@ -40,9 +46,8 @@ def pytest_runtest_makereport(item):
     if report.when == 'call' or report.when == "setup":
         xfail = hasattr(report, 'wasxfail')
         if (report.skipped and xfail) or (report.failed and not xfail):
-            file_name = report.nodeid.replace("::", "_") + ".png"
             screen_img = _capture_screenshot()
-            if file_name:
+            if screen_img:
                 html = '<div><img src="data:image/png;base64,%s" alt="screenshot" style="width:1024px;height:768px;" ' \
                        'onclick="window.open(this.src)" align="right"/></div>' % screen_img
                 extra.append(pytest_html.extras.html(html))
@@ -75,6 +80,14 @@ def pytest_html_results_table_html(report, data):
 def _capture_screenshot():
     '''
     截图保存为base64
-    :return:
     '''
-    return driver.get_screenshot_as_base64()
+    now_time = datetime_strftime("%Y%m%d%H%M%S")
+    if not os.path.exists(SCREENSHOT_DIR):
+        os.makedirs(SCREENSHOT_DIR)
+    screen_path = os.path.join(SCREENSHOT_DIR, "{}.png".format(now_time))
+    driver.save_screenshot(screen_path)
+    allure.attach.file(screen_path, "测试失败截图...{}".format(
+        now_time), allure.attachment_type.PNG)
+    with open(screen_path, 'rb') as f:
+        imagebase64 = base64.b64encode(f.read())
+    return imagebase64.decode()

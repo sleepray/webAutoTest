@@ -15,7 +15,11 @@ def timestamp():
 
 
 def datetime_strftime(fmt="%Y%m"):
-    """datetime格式化时间"""
+    """
+    datetime格式化时间
+    :param fmt "%Y%m%d %H%M%S
+    """
+
     return datetime.datetime.now().strftime(fmt)
 
 
@@ -27,4 +31,4 @@ def sleep(seconds=1.0):
 
 
 if __name__ == '__main__':
-    print(datetime_strftime())
+    print(datetime_strftime("%Y%m%d%H%M%S"))
