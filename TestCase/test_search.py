@@ -37,7 +37,7 @@ class TestSearch:
         search = SearchPage(drivers)
         search.input_search("selenium")
         log.info(list(search.imagine))
-        assert not all(["selenium" in i for i in search.imagine])
+        assert all(["selenium" in i for i in search.imagine])
 
 
 if __name__ == '__main__':
