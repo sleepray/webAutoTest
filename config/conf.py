@@ -26,12 +26,6 @@ LOG_PATH = os.path.join(BASE_DIR, 'logs')
 # 报告目录
 REPORT_PATH = os.path.join(BASE_DIR, 'report', 'report.html')
 
-# allure报告目录
-ALLURE_REPORT = os.path.join(BASE_DIR, 'allure-report')
-
-# allure原始数据
-ALLURE_RESULTS = os.path.join(BASE_DIR, 'allure-results')
-
 # 截图目录
 SCREENSHOT_DIR = os.path.join(BASE_DIR, 'screen_capture')
 
