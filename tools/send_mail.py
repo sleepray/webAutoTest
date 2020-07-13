@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import sys
-
-sys.path.append('.')
-__author__ = '1084502012@qq.com'
-
 import zmail
 from config.conf import REPORT_PATH, EMAIL_INFO, ADDRESSEE
 

@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import sys
-
-sys.path.append('.')
-__author__ = '1084502012@qq.com'
-
 import os
 import logging
 from config.conf import LOG_PATH
