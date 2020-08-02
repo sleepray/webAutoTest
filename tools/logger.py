@@ -8,9 +8,6 @@ from tools.times import datetime_strftime
 
 class Log:
     def __init__(self):
-        log_path = self.log_path[:self.log_path.rfind('/')]
-        if not os.path.exists(log_path):
-            os.makedirs(log_path)
         self.logger = logging.getLogger()
         if not self.logger.handlers:
             self.logger.setLevel(logging.DEBUG)
@@ -34,6 +31,8 @@ class Log:
 
     @property
     def log_path(self):
+        if not os.path.exists(LOG_PATH):
+            os.makedirs(LOG_PATH)
         return os.path.join(LOG_PATH, '{}.log'.format(datetime_strftime()))
 
     @property
