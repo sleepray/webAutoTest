@@ -64,3 +64,5 @@ target/
 .idea/
 allure-report/
 allure-results/
+allure/
+docs/

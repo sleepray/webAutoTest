@@ -3,7 +3,7 @@
 import re
 import pytest
 import allure
-from tools.logger import log
+from utils.logger import log
 from common.readconfig import ini
 from page_object.searchpage import SearchPage
 
@@ -35,5 +35,9 @@ class TestSearch:
         assert all(["selenium" in i for i in search.imagine])
 
 
+# if __name__ == '__main__':
+#     pytest.main(['TestCase/test_search.py'])
 if __name__ == '__main__':
-    pytest.main(['TestCase/test_search.py'])
+    import os
+    pytest.main(['TestCase/test_search.py', '--alluredir', './allure'])
+    os.system('allure serve allure')

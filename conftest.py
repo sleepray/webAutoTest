@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-import os
 import base64
 import pytest
 import allure
-from py._xmlgen import html
+from py.xml import html
 from selenium import webdriver
+
+from config.conf import cm
 from common.readconfig import ini
-from config.conf import SCREENSHOT_DIR
-from common.inspect import inspect_element
-from tools.send_mail import send_report
-from tools.times import datetime_strftime, timestamp
+from utils.times import timestamp
+from utils.send_mail import send_report
 
 driver = None
 
@@ -21,7 +20,6 @@ def drivers(request):
     if driver is None:
         driver = webdriver.Chrome()
         driver.maximize_window()
-    inspect_element()
 
     def fn():
         driver.quit()
@@ -30,7 +28,7 @@ def drivers(request):
     return driver
 
 
-@pytest.mark.hookwrapper
+@pytest.hookimpl(hookwrapper=True)
 def pytest_runtest_makereport(item):
     """
     当测试失败的时候，自动截图，展示到html报告中
@@ -39,6 +37,7 @@ def pytest_runtest_makereport(item):
     pytest_html = item.config.pluginmanager.getplugin('html')
     outcome = yield
     report = outcome.get_result()
+    report.description = str(item.function.__doc__)
     extra = getattr(report, 'extra', [])
 
     if report.when == 'call' or report.when == "setup":
@@ -50,43 +49,36 @@ def pytest_runtest_makereport(item):
                        'onclick="window.open(this.src)" align="right"/></div>' % screen_img
                 extra.append(pytest_html.extras.html(html))
         report.extra = extra
-        report.description = str(item.function.__doc__)
 
 
-@pytest.mark.optionalhook
 def pytest_html_results_table_header(cells):
     cells.insert(1, html.th('用例名称'))
     cells.insert(2, html.th('Test_nodeid'))
     cells.pop(2)
 
 
-@pytest.mark.optionalhook
 def pytest_html_results_table_row(report, cells):
     cells.insert(1, html.td(report.description))
     cells.insert(2, html.td(report.nodeid))
     cells.pop(2)
 
 
-@pytest.mark.optionalhook
 def pytest_html_results_table_html(report, data):
     if report.passed:
         del data[:]
         data.append(html.div('通过的用例未捕获日志输出.', class_='empty log'))
 
 
-@pytest.mark.optionalhook
 def pytest_html_report_title(report):
     report.title = "pytest示例项目测试报告"
 
 
-@pytest.mark.optionalhook
 def pytest_configure(config):
     config._metadata.clear()
     config._metadata['测试项目'] = "测试百度官网搜索"
     config._metadata['测试地址'] = ini.url
 
 
-@pytest.mark.optionalhook
 def pytest_html_results_summary(prefix, summary, postfix):
     # prefix.clear() # 清空summary中的内容
     prefix.extend([html.p("所属部门: XX公司测试部")])
@@ -110,16 +102,12 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
 
 def _capture_screenshot():
-    '''
-    截图保存为base64
-    '''
-    now_time = datetime_strftime("%Y%m%d%H%M%S")
-    if not os.path.exists(SCREENSHOT_DIR):
-        os.makedirs(SCREENSHOT_DIR)
-    screen_path = os.path.join(SCREENSHOT_DIR, "{}.png".format(now_time))
-    driver.save_screenshot(screen_path)
-    allure.attach.file(screen_path, "测试失败截图...{}".format(
-        now_time), allure.attachment_type.PNG)
-    with open(screen_path, 'rb') as f:
+    """截图保存为base64"""
+    now_time, screen_file = cm.screen_path
+    driver.save_screenshot(screen_file)
+    allure.attach.file(screen_file,
+                       "失败截图{}".format(now_time),
+                       allure.attachment_type.PNG)
+    with open(screen_file, 'rb') as f:
         imagebase64 = base64.b64encode(f.read())
     return imagebase64.decode()
