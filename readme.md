@@ -24,18 +24,15 @@
 
 ## 运行
 
+### 安装依赖
 
-* MacOS 系统或 Linux 系统
+```shell
+pip install -r requirements.txt
+```
 
-    - `cd 项目根目录/script`
+### 执行主文件
 
-    - 在命令行输入`sh run_mac.sh`即可运行
-
-- Windows 系统
-
-    - `cd 项目根目录\script`
-
-    - 在命令行输入`run_mac.bat`即可运行
+* 在项目根目录执行`run_case.py`文件即可运行项目
 
 
 # allure参数说明
