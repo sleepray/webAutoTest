@@ -35,9 +35,10 @@ class TestSearch:
         assert all(["selenium" in i for i in search.imagine])
 
 
-# if __name__ == '__main__':
-#     pytest.main(['TestCase/test_search.py'])
 if __name__ == '__main__':
-    import os
-    pytest.main(['TestCase/test_search.py', '--alluredir', './allure'])
-    os.system('allure serve allure')
+    pytest.main(['TestCase/test_search.py'])
+# if __name__ == '__main__':
+# 下面的代码使用pycharm运行可能会没有生成报告，建议使用vscode执行
+#     import os
+#     pytest.main(['TestCase/test_search.py', '--alluredir', './allure'])
+#     os.system('allure serve allure')
