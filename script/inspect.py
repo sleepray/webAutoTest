@@ -30,6 +30,8 @@ def inspect_element():
                     '%s中元素【%s]css类型与值不配' % (_path, k)
             else:
                 assert value, '%s中元素【%s】类型与值不匹配' % (_path, k)
+    else:
+        print("执行完成！")
 
 
 if __name__ == '__main__':
