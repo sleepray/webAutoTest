@@ -26,5 +26,7 @@ class Element(object):
 
 
 if __name__ == '__main__':
-    search = Element('search')
-    print(search['搜索框'])
+    # login = Element('login')
+    # print(login['用户名'],login['密码'])
+    log= Element("logconfig")
+    print(log['file'])

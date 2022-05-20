@@ -1,6 +1,6 @@
-用户名: "id==username"
-密码: "id==password"
-登录按钮: "xpath==//button[@type='button']"
-LDAP: "xpath==//div[@style='border-bottom-color: transparent;']"
-搜索: "xpath==//input[@placeholder='请输入项目名称/描述']"
-搜索按钮: "xpath==//input[@placeholder='请输入项目名称/描述']/../span"
+logger:
+  name: liang
+  level: INFO
+#  format: '%(filename)s-%(lineno)d-%(asctime)s-%(levelname)s-%(message)s'
+  format: '等级：%(levelname)s时间：%(asctime)s 日志信息：%(message)s 行号：%(lineno)d'
+#  file: D:\test\auto\python_projects\log\test.log

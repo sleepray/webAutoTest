@@ -1,30 +1,27 @@
 import yaml
 import os
+from config.conf import cm
 
-class YamlMethod(object):
+class Readlog(object):
+    '''读取logyaml文件'''
 
-    @classmethod
-    def yaml_read(cls, yaml_path):
-        '''
-        读取yaml文件
-        :param yaml_path: yaml路径
-        :return:
-        '''
+    def __init__(self):
+        self.log_yaml = os.path.join(cm.LOG_FILE, "logconfig.yaml")
 
-        def __init__(self, name):
-            self.file_name = '%s.yaml' % name
-            self.element_path = os.path.join(cm.ELEMENT_PATH, self.file_name)
-            if not os.path.exists(self.element_path):
-                raise FileNotFoundError("%s 文件不存在！" % self.element_path)
-            with open(self.element_path, encoding='utf-8') as f:
-                self.data = yaml.safe_load(f)
-
-        with open(yaml_path, 'r', encoding='utf-8') as f:
-            result = f.read()
-            data = yaml.load(result, Loader=yaml.FullLoader)
+    def red(self):
+        if not os.path.exists(self.log_yaml):
+            raise FileNotFoundError("%s 文件不存在！" % self.log_yaml)
+        with open(self.log_yaml, encoding='utf-8') as f:
+            data = yaml.safe_load(f)
             return data
 
-    @classmethod
-    def yaml_write(cls, yaml_path, data):
-        with open(yaml_path, 'w', encoding='utf-8') as f:
-            yaml.dump(data, f)
+    def write(self, data):
+        with open(self.log_yaml, 'a', encoding='utf-8') as f:
+            yaml.dump(data, f, allow_unicode=True)
+
+redyaml = Readlog()
+
+if __name__ == '__main__':
+    print(redyaml.red()['logger'])
+    # print(Readlog().write({"ces" : "测试"}))
+

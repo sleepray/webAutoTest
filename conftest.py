@@ -19,7 +19,7 @@ def drivers(request):
     global driver
     if driver is None:
         driver = webdriver.Chrome()
-        driver.maximize_window()
+        driver.maximize_window() #最大化浏览器
 
     def fn():
         driver.quit()

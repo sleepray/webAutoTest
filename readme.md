@@ -43,4 +43,4 @@ pip install -r requirements.txt
 - allure generate `result-path`
     - -c 生成报告前删除上一次生成的报告
     - -o 指定生成的报告目录
-- allure open `report-path`
+- allure open `report-path`# webAutoTest

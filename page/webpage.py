@@ -7,6 +7,7 @@ selenium基类
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
+from selenium.webdriver.common.keys import Keys
 
 from config.conf import cm
 from utils.times import sleep
@@ -37,6 +38,7 @@ class WebPage(object):
     def element_locator(func, locator):
         """元素定位器"""
         name, value = locator
+        print("name: {0}, value {1}".format(name, value))
         return func(cm.LOCATE_MODE[name], value)
 
     def find_element(self, locator):
@@ -63,6 +65,14 @@ class WebPage(object):
         ele.send_keys(txt)
         log.info("输入文本：{}".format(txt))
 
+    def clear_text(self, locator):
+        """clear()函数不起作用时，采用Backspace键删除"""
+        sleep(0.5)
+        ele = self.find_element(locator)
+        ele.send_keys(Keys.CONTROL,"a")
+        ele.send_keys(Keys.BACKSPACE)
+        log.info("清空元素输入框：{}".format(locator))
+
     def is_click(self, locator):
         """点击"""
         self.find_element(locator).click()
@@ -84,6 +94,10 @@ class WebPage(object):
         """刷新页面F5"""
         self.driver.refresh()
         self.driver.implicitly_wait(30)
+
+    def close(self):
+        """关闭浏览器"""
+        self.driver.close()
 
 
 if __name__ == "__main__":

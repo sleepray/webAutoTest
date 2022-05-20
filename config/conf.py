@@ -15,6 +15,9 @@ class ConfigManager(object):
     # 报告文件
     REPORT_FILE = os.path.join(BASE_DIR, 'report.html')
 
+    # log目录
+    LOG_FILE = os.path.join(BASE_DIR, 'logs')
+
     # 元素定位的类型
     LOCATE_MODE = {
         'css': By.CSS_SELECTOR,
@@ -26,15 +29,15 @@ class ConfigManager(object):
 
     # 邮件信息
     EMAIL_INFO = {
-        'username': '1084502012@qq.com',  # 切换成你自己的地址
-        'password': 'QQ邮箱授权码',
+        'username': '302559651@qq.com',  # 切换成你自己的地址
+        'password': 'gnwzuldkeobpbjdh',
         'smtp_host': 'smtp.qq.com',
         'smtp_port': 465
     }
 
     # 收件人
     ADDRESSEE = [
-        '1084502012@qq.com',
+        '302559651@qq.com',
     ]
 
     @property
@@ -64,6 +67,8 @@ class ConfigManager(object):
         return ini_file
 
 
+
 cm = ConfigManager()
 if __name__ == '__main__':
-    print(cm.BASE_DIR)
+    pass
+    # print(cm.BASE_DIR)

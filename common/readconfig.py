@@ -23,7 +23,7 @@ class ReadConfig(object):
         with open(cm.ini_file, 'w') as f:
             self.config.write(f)
 
-    @property
+    @property #只读属性
     def url(self):
         return self._get(HOST, HOST)
 
