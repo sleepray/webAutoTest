@@ -1,0 +1,6 @@
+用户名: "id==username"
+密码: "id==password"
+登录按钮: "xpath==//button[@type='button']"
+LDAP: "xpath==//div[@style='border-bottom-color: transparent;']"
+搜索: "xpath==//input[@placeholder='请输入项目名称/描述']"
+搜索按钮: "xpath==//input[@placeholder='请输入项目名称/描述']/../span"
