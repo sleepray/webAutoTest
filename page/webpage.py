@@ -4,6 +4,7 @@
 selenium基类
 本文件存放了selenium基类的封装方法
 """
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.common.exceptions import TimeoutException
@@ -13,6 +14,8 @@ from config.conf import cm
 from utils.times import sleep
 from utils.logger import log
 
+from selenium.webdriver.common.by import By
+from selenium import webdriver
 
 class WebPage(object):
     """selenium基类"""
@@ -38,7 +41,6 @@ class WebPage(object):
     def element_locator(func, locator):
         """元素定位器"""
         name, value = locator
-        print("name: {0}, value {1}".format(name, value))
         return func(cm.LOCATE_MODE[name], value)
 
     def find_element(self, locator):
@@ -51,6 +53,10 @@ class WebPage(object):
         return WebPage.element_locator(lambda *args: self.wait.until(
             EC.presence_of_all_elements_located(args)), locator)
 
+    def wait_element(self, locator):
+        self.wait.until(
+            EC.presence_of_element_located(locator))
+
     def elements_num(self, locator):
         """获取相同元素的个数"""
         number = len(self.find_elements(locator))
@@ -61,7 +67,19 @@ class WebPage(object):
         """输入(输入前先清空)"""
         sleep(0.5)
         ele = self.find_element(locator)
-        ele.clear()
+        # ele.clear()  clear() 函数有时不生效,这里先用键盘删除来替代
+        ele.send_keys(Keys.CONTROL,"a")
+        ele.send_keys(Keys.BACKSPACE)
+        ele.send_keys(txt)
+        log.info("输入文本：{}".format(txt))
+
+    def inputs_text(self, num, locator, txt):
+        """输入(输入前先清空)"""
+        sleep(0.5)
+        ele = self.find_elements(locator)[num]
+        # ele.clear()  clear() 函数有时不生效,这里先用键盘删除来替代
+        ele.send_keys(Keys.CONTROL,"a")
+        ele.send_keys(Keys.BACKSPACE)
         ele.send_keys(txt)
         log.info("输入文本：{}".format(txt))
 
@@ -79,6 +97,19 @@ class WebPage(object):
         sleep()
         log.info("点击元素：{}".format(locator))
 
+    def is_clicks(self, num, locator):
+        """点击相同元素"""
+        self.find_elements(locator)[num].click()
+        sleep()
+        log.info("点击元素：{} 中的第 {}个".format(locator, num + 1))
+
+    def is_clicksEnd(self, locator):
+        """点击相同元素中最后一个元素"""
+        num = len(self.find_elements(locator)) - 1 #获取列表元素，在列表中使用时是从0开始数，所以这里减1
+        self.find_elements(locator)[num].click()
+        sleep()
+        log.info("点击元素：{} 中的最后一个".format(locator))
+
     def element_text(self, locator):
         """获取当前的text"""
         _text = self.find_element(locator).text
@@ -88,6 +119,8 @@ class WebPage(object):
     @property
     def get_source(self):
         """获取页面源代码"""
+        self.driver.implicitly_wait(30) # 等待页面全部加载完成后，获取源码
+        sleep()  # courier 项目中，隐式等待无效，故停顿1s
         return self.driver.page_source
 
     def refresh(self):
@@ -98,6 +131,11 @@ class WebPage(object):
     def close(self):
         """关闭浏览器"""
         self.driver.close()
+
+    def is_action(self, locator):
+        """浮动在元素上方"""
+        ele = self.find_element(locator)
+        ActionChains(self.driver).move_to_element(ele).perform()
 
 
 if __name__ == "__main__":

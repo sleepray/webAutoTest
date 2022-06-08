@@ -8,9 +8,10 @@ def send_report():
     """发送报告"""
     with open(cm.REPORT_FILE, encoding='utf-8') as f:
         content_html = f.read()
+        print(content_html)
     try:
         mail = {
-            'from': '1084502012@qq.com',
+            'from': '302559651@qq.com',
             'subject': '最新的测试报告邮件',
             'content_html': content_html,
             'attachments': [cm.REPORT_FILE, ]

@@ -60,7 +60,7 @@ class Logger(logging.Logger):
         # 如果file存在就将日志输出到文件中
         if file:
             # 默认写入方式为'a'
-            file_handler = logging.FileHandler(file, encoding='utf-8', mode='a')
+            file_handler = logging.FileHandler(file, encoding='utf-8', mode='w')
             file_handler.setLevel(level)
             file_handler.setFormatter(fmt)
             self.addHandler(file_handler)

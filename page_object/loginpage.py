@@ -3,7 +3,7 @@
 from page.webpage import WebPage, sleep
 from common.readelement import Element
 
-# login = Element('devops_login')
+menu = Element('courier_menu')
 login = Element('courier_login')
 
 class LoginPage(WebPage):
@@ -32,27 +32,22 @@ class LoginPage(WebPage):
         """点击登录"""
         self.is_click(login['登录按钮'])
 
-    def click_search(self):
-        """搜索按钮"""
-        self.is_click(login['搜索按钮'])
+    def action_admin(self):
+        """浮动登出"""
+        self.is_action(login['admin'])
 
-    def input_servername(self, content):
-        """输入服务名"""
-        self.input_text(login['服务名'], txt=content)
-        sleep()
+    def click_logout(self):
+        """点击登录"""
+        self.is_click(login['退出登录'])
 
     def input_clear(self, content):
-        """输入服务名"""
+        """清空输入栏"""
         self.clear_text(login[content])
         sleep()
 
-class MenuPage(WebPage):
-    """菜单类"""
-
     def click_Menu(self, content):
-        """点击登录"""
-        self.is_click(login[content])
-
+        """点击菜单"""
+        self.is_click(menu[content])
 
 if __name__ == '__main__':
     pass

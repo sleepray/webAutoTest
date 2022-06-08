@@ -75,14 +75,14 @@ def pytest_html_report_title(report):
 
 def pytest_configure(config):
     config._metadata.clear()
-    config._metadata['测试项目'] = "测试百度官网搜索"
+    config._metadata['测试项目'] = "测试devops"
     config._metadata['测试地址'] = ini.url
 
 
 def pytest_html_results_summary(prefix, summary, postfix):
     # prefix.clear() # 清空summary中的内容
     prefix.extend([html.p("所属部门: XX公司测试部")])
-    prefix.extend([html.p("测试执行人: 随风挥手")])
+    prefix.extend([html.p("测试执行人: 吴彦祖")])
 
 
 def pytest_terminal_summary(terminalreporter, exitstatus, config):
