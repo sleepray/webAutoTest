@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 from page.webpage import WebPage, sleep
 from common.readelement import Element
+from utils.logger import log
 
 menu = Element('courier_menu')
 
@@ -68,6 +69,13 @@ class MenuPage(WebPage):
     def click_switch(self, num):
         """点击开关按钮"""
         self.is_clicks(num ,menu['开关按钮'])
+
+    def waite_element(self, content):
+        """等待发现页面中的元素"""
+        self.find_element(menu[content])
+        log.info("等待 {} 元素节点加载出来".format(menu[content]))
+
+
 
 class Service(MenuPage):
     """服务管理"""

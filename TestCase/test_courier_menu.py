@@ -10,7 +10,6 @@ from utils.logger import log
 from common.readconfig import ini
 from page_object.loginpage import LoginPage
 from page_object.menupage import MenuPage, Service, Link, ServiceConfig, ConfigManage, Blacklist, Location, Conditional, Statistics
-from selenium.webdriver.common.by import By
 
 # 系统run时改为False
 auto = False
@@ -34,6 +33,7 @@ class TestService:
         """点击服务管理"""
         serv = Service(drivers)
         serv.click_Menu('服务管理')
+        serv.waite_element('服务名')
         result = re.search(r'服务列表', serv.get_source)
         log.info(result)
         assert result
@@ -203,6 +203,7 @@ class TestLink:
         """点击服务管理"""
         link = Link(drivers)
         link.click_Menu('链路追踪')
+        link.waite_element("根服务名")
         result = re.search(r'链路追踪记录列表', link.get_source)
         log.info(result)
         assert result
@@ -295,6 +296,7 @@ class TestServiceConfig:
         """点击服务管理"""
         sercof = ServiceConfig(drivers)
         sercof.click_Menu('服务配置')
+        sercof.waite_element("key")
         result = re.search(r'配置类型', sercof.get_source)
         log.info(result)
         assert result
@@ -630,6 +632,7 @@ class TestConfigManage:
         # 系统run的时候开启这一条，否则无法跳转配置管理
         confma.click_Menu("服务网关")
         confma.click_Menu('配置管理')
+        confma.waite_element('随机')
         result = re.search(r'负载均衡', confma.get_source)
         log.info(result)
         assert result
@@ -1039,6 +1042,7 @@ class TestBlacklist:
         """点击黑白名单"""
         blackli = Blacklist(drivers)
         blackli.click_Menu('黑白名单')
+        blackli.waite_element('白名单管理')
         result = re.search(r'IP地址', blackli.get_source)
         log.info(result)
         assert result
@@ -1180,6 +1184,7 @@ class TestLocation:
         """点击地理位置"""
         local = Location(drivers)
         local.click_Menu('地理位置')
+        local.waite_element('开关按钮')
         result = re.search(r'区域经纬度', local.get_source)
         log.info(result)
         assert result
@@ -1189,6 +1194,7 @@ class TestLocation:
         """地理位置启用开关测试"""
         local = Location(drivers)
         local.click_switch(0)
+        sleep()
         result = re.search(r'aria-checked="true"', local.get_source)
         log.info(result)
         assert result
@@ -1337,9 +1343,10 @@ class TestConditional:
     @allure.story("点击条件表达式")
     def test_001(self, drivers):
         """点击地理位置"""
-        local = Location(drivers)
-        local.click_Menu('条件表达式')
-        result = re.search(r'开启', local.get_source)
+        condit = Location(drivers)
+        condit.click_Menu('条件表达式')
+        condit.waite_element('服务名输入')
+        result = re.search(r'开启', condit.get_source)
         log.info(result)
         assert result
 
@@ -1540,6 +1547,7 @@ class TestConditional:
         # condit.click_ButtoNo(0)
         # condit.click_shut(0)
         # sleep(2)
+        sleep()
         condit.click_ButtonYes(0)
         result = re.search(r'更改成功', condit.get_source)
         log.info(result)
@@ -1551,6 +1559,7 @@ class TestConditional:
         # condit.click_ButtoNo(0)
         # condit.click_opens(0)
         # sleep(2)
+        sleep()
         condit.click_ButtonYes(0)
         result = re.search(r'更改成功', condit.get_source)
         log.info(result)
@@ -1593,6 +1602,7 @@ class TestStatistics:
         """点击指标统计"""
         stati = Statistics(drivers)
         stati.click_Menu('指标统计')
+        stati.waite_element('端口')
         result = re.search(r'成功次数', stati.get_source)
         log.info(result)
         assert result

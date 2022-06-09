@@ -14,8 +14,6 @@ from config.conf import cm
 from utils.times import sleep
 from utils.logger import log
 
-from selenium.webdriver.common.by import By
-from selenium import webdriver
 
 class WebPage(object):
     """selenium基类"""
@@ -52,10 +50,6 @@ class WebPage(object):
         """查找多个相同的元素"""
         return WebPage.element_locator(lambda *args: self.wait.until(
             EC.presence_of_all_elements_located(args)), locator)
-
-    def wait_element(self, locator):
-        self.wait.until(
-            EC.presence_of_element_located(locator))
 
     def elements_num(self, locator):
         """获取相同元素的个数"""
@@ -120,13 +114,14 @@ class WebPage(object):
     def get_source(self):
         """获取页面源代码"""
         self.driver.implicitly_wait(30) # 等待页面全部加载完成后，获取源码
-        sleep()  # courier 项目中，隐式等待无效，故停顿1s
+        # sleep()  # courier 项目中，隐式等待无效，故停顿1s
         return self.driver.page_source
 
     def refresh(self):
         """刷新页面F5"""
         self.driver.refresh()
         self.driver.implicitly_wait(30)
+        log.info("刷新页面")
 
     def close(self):
         """关闭浏览器"""
@@ -136,6 +131,7 @@ class WebPage(object):
         """浮动在元素上方"""
         ele = self.find_element(locator)
         ActionChains(self.driver).move_to_element(ele).perform()
+        log.info("浮动在元素{}上方".format(ele))
 
 
 if __name__ == "__main__":
