@@ -18,6 +18,9 @@ class ConfigManager(object):
     # log目录
     LOG_FILE = os.path.join(BASE_DIR, 'logs')
 
+    # 截图目录
+    SCREEN_FILE = os.path.join(BASE_DIR, 'screen_capture')
+
     # 元素定位的类型
     LOCATE_MODE = {
         'css': By.CSS_SELECTOR,
@@ -43,20 +46,18 @@ class ConfigManager(object):
     @property
     def screen_path(self):
         """截图目录"""
-        screenshot_dir = os.path.join(self.BASE_DIR, 'screen_capture')
-        if not os.path.exists(screenshot_dir):
-            os.makedirs(screenshot_dir)
+        if not os.path.exists(self.SCREEN_FILE):
+            os.makedirs(self.SCREEN_FILE)
         now_time = dt_strftime("%Y%m%d%H%M%S")
-        screen_file = os.path.join(screenshot_dir, "{}.png".format(now_time))
+        screen_file = os.path.join(self.SCREEN_FILE, "{}.png".format(now_time))
         return now_time, screen_file
 
     @property
     def log_file(self):
         """日志目录"""
-        log_dir = os.path.join(self.BASE_DIR, 'logs')
-        if not os.path.exists(log_dir):
-            os.makedirs(log_dir)
-        return os.path.join(log_dir, '{}.log'.format(dt_strftime()))
+        if not os.path.exists(self.LOG_FILE):
+            os.makedirs(self.LOG_FILE)
+        return os.path.join(self.LOG_FILE, '{}.log'.format(dt_strftime()))
 
     @property
     def ini_file(self):
@@ -70,5 +71,5 @@ class ConfigManager(object):
 
 cm = ConfigManager()
 if __name__ == '__main__':
-    pass
-    # print(cm.BASE_DIR)
+    print(cm.screen_path)
+    print(cm.log_file)

@@ -3,6 +3,9 @@
 import base64
 import pytest
 import allure
+import os
+import datetime
+import time
 from py.xml import html
 from selenium import webdriver
 
@@ -75,7 +78,7 @@ def pytest_html_report_title(report):
 
 def pytest_configure(config):
     config._metadata.clear()
-    config._metadata['测试项目'] = "测试devops"
+    config._metadata['测试项目'] = "测试courier"
     config._metadata['测试地址'] = ini.url
 
 
@@ -103,6 +106,7 @@ def pytest_terminal_summary(terminalreporter, exitstatus, config):
 
 def _capture_screenshot():
     """截图保存为base64"""
+    delete_ndays_ago_screen() # 保存时删除7天以前的截图文件
     now_time, screen_file = cm.screen_path
     driver.save_screenshot(screen_file)
     allure.attach.file(screen_file,
@@ -111,3 +115,18 @@ def _capture_screenshot():
     with open(screen_file, 'rb') as f:
         imagebase64 = base64.b64encode(f.read())
     return imagebase64.decode()
+
+def delete_ndays_ago_screen():
+    """删除7天以前的截图文件"""
+    n_days_ago = 7
+    for parent, dirnames, filenames in os.walk(cm.SCREEN_FILE):
+        for filename in filenames:
+            full_name = parent + "\\" + filename  # 文件全称
+            create_time = int(os.path.getctime(full_name))  # 文件创建时间
+            print(create_time)
+            # 当前时间的n天前的时间
+            delta_days = (datetime.datetime.now() - datetime.timedelta(days=n_days_ago))
+            time_stamp = int(time.mktime(delta_days.timetuple()))
+            if create_time < time_stamp:  # 创建时间在n天前的文件删除
+                os.remove(os.path.join(parent, filename))
+                print(f"截图：{filename} 已过期删除")
